@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Settings</title>
+    <link type="text/css" rel="stylesheet" href="/static/main.css">
+    <link rel="icon" type="image/ico" href="/static/favicon.ico">
+</head>
+    <body>
+        <form><button type="button" id="signout">Sign Out</button></form><br>
+        <a id="load"></a>
+        <form>
+          Username: <input type="text" id="user"><br>
+          Email: <input type="email" id="email"><br>
+          Classes:<br><div id="questions"></div><br>
+          <button type="button" id="addsem">Add Semester</button>
+          <button type="button" id="remsem">Remove Semester</button><br>
+          <button type="button" id="addcla">Add Class</button>
+          <button type="button" id="remcla">Remove Class</button><br>
+          Unweighted Goal: <input type="text" id="uwgoal"><br>
+          Weighted Goal: <input type="text" id="wgoal"><br>
+          <button type="button" id="updateUser">Save All Above Fields</button><br>
+          <button type="button" id="changepw">Change Password</button><br>
+          <button type="button" id="delete">Delete Account</button><br>
+          <button type="button" id="home">Go Back</button>
+        </form>
+        <script src="https://www.gstatic.com/firebasejs/6.4.2/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/6.4.2/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/6.4.2/firebase-firestore.js"></script>
+        
+        <script>
+          // Your web app's Firebase configuration
+          var firebaseConfig = {
+            apiKey: "AIzaSyAiJ7LaeIdYVkYjITeD7n7l8tlhtBwbEcs",
+            authDomain: "gpa-calculat.firebaseapp.com",
+            databaseURL: "https://gpa-calculat.firebaseio.com",
+            projectId: "gpa-calculat",
+            storageBucket: "",
+            messagingSenderId: "759808162504",
+            appId: "1:759808162504:web:05dbfe6b6274801f"
+          };
+          // Initialize Firebase
+          firebase.initializeApp(firebaseConfig);
+          
+          const auth = firebase.auth();
+          const db = firebase.firestore();
+          
+        </script>
+        <script src="/scripts/main.js"></script>
+        <script src="/scripts/firbase_communication.js"></script>
+        <script src="/scripts/redirects.js"></script>
+        <script>
+          var done = false;
+          document.getElementById("load").innerHTML = "Loading . . .";
+          function wait() {
+            if (auth.currentUser === null){
+              setTimeout(()=>{wait()}, 100);
+            } else {
+              db.collection("users").doc(auth.currentUser.uid).get().then((doc) => {
+                if (doc.exists) {
+                  document.getElementById("load").innerHTML = "";
+                  document.getElementById("user").value = auth.currentUser.displayName;
+                  document.getElementById("email").value = auth.currentUser.email;
+                  document.getElementById("uwgoal").value = doc.data().uwgoal;
+                  document.getElementById("wgoal").value = doc.data().wgoal;
+                  getSemesters(doc.data());
+                  window.semesters = doc.data().Semesters;
+                  window.semester = Object.keys(window.semesters).length;
+                } else {}
+              }).catch((error) => {
+                console.log("Error getting data. \n" + error);
+              });
+            }
+          }
+          wait();
+        </script>
+    </body>
+</html>

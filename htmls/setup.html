@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Setup</title>
+    <link type="text/css" rel="stylesheet" href="/static/main.css">
+    <link rel="icon" type="image/ico" href="/static/favicon.ico">
+</head>
+    <body>
+        
+        <form id="classes">
+            <div id="questions"></div>
+            <button type="button" id="addsem">Add Semester</button>
+            <button type="button" id="remsem">Remove Semester</button><br>
+            <button type="button" id="addcla">Add Class</button>
+            <button type="button" id="remcla">Remove Class</button><br>
+        </form>
+        Unweighted GPA Goal: <input id="uwgoal" type="text"><br>
+        Weighted GPA Goal: <input id="wgoal" type="text"><br>
+        <button type="button" id="save">Save All</button>
+        
+        <script src="https://www.gstatic.com/firebasejs/6.4.2/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/6.4.2/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/6.4.2/firebase-firestore.js"></script>
+        
+        <script>
+          // Your web app's Firebase configuration
+          var firebaseConfig = {
+            apiKey: "AIzaSyAiJ7LaeIdYVkYjITeD7n7l8tlhtBwbEcs",
+            authDomain: "gpa-calculat.firebaseapp.com",
+            databaseURL: "https://gpa-calculat.firebaseio.com",
+            projectId: "gpa-calculat",
+            storageBucket: "",
+            messagingSenderId: "759808162504",
+            appId: "1:759808162504:web:05dbfe6b6274801f"
+          };
+          // Initialize Firebase
+          firebase.initializeApp(firebaseConfig);
+          
+          const auth = firebase.auth();
+          const db = firebase.firestore();
+          
+          
+          var semester = 0;
+        </script>
+        <script src="/scripts/main.js"></script>
+        <script src="/scripts/firbase_communication.js"></script>
+        <script src="/scripts/redirects.js"></script>
+    </body>
+</html>

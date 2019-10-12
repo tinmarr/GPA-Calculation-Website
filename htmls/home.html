@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link type="text/css" rel="stylesheet" href="/static/main.css">
+    <link rel="icon" type="image/ico" href="/static/favicon.ico">
+</head>
+    <body>
+        <form>
+          <button type="button" id="signout">Sign Out</button>
+          <button type="button" id="settings">Settings</button>
+          <button type="button" id="addsems">Add Semester</button>
+        </form><br>
+        
+        
+        <a id="uwgpa"></a> <a id="uwgoal"></a><br>
+        <a id="wgpa"></a> <a id="wgoal"></a><br>
+        <a id="uwpercentile"></a><br><a id="wpercentile"></a><br><br>
+        
+        <a id="text"></a><br>
+        <div id="latest"></div>
+        
+        <script src="https://www.gstatic.com/firebasejs/6.4.2/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/6.4.2/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/6.4.2/firebase-firestore.js"></script>
+
+        <script>
+          // Your web app's Firebase configuration
+          var firebaseConfig = {
+            apiKey: "AIzaSyAiJ7LaeIdYVkYjITeD7n7l8tlhtBwbEcs",
+            authDomain: "gpa-calculat.firebaseapp.com",
+            databaseURL: "https://gpa-calculat.firebaseio.com",
+            projectId: "gpa-calculat",
+            storageBucket: "",
+            messagingSenderId: "759808162504",
+            appId: "1:759808162504:web:05dbfe6b6274801f"
+          };
+          // Initialize Firebase
+          firebase.initializeApp(firebaseConfig);
+          
+          const auth = firebase.auth();
+          const db = firebase.firestore();
+        </script>
+        <script src="/scripts/main.js"></script>
+        <script src="/scripts/firbase_communication.js"></script>
+        <script src="/scripts/redirects.js"></script>
+        <script>
+          document.getElementById("uwgpa").innerHTML = "Loading . . .";
+          document.getElementById("text").innerHTML = "Loading . . .";
+          document.getElementById("uwpercentile").innerHTML = "Loading . . .";
+          function wait() {
+            if (auth.currentUser === null) {
+              setTimeout(()=>{wait()}, 100);
+            } else {
+              auth.currentUser.emailVerified ? {} : window.location.href = "/htmls/verify.html";
+              
+              db.collection("users").doc(auth.currentUser.uid).get().then((doc) => {
+                if (doc.exists) {
+                  document.getElementById("uwgpa").innerHTML = "Your unweighted GPA is " + doc.data().uwgpa;
+                  document.getElementById("wgpa").innerHTML = "Wieghted GPA is " + doc.data().wgpa;
+                  document.getElementById("uwgoal").innerHTML = "and your goal is " + doc.data().uwgoal;
+                  document.getElementById("wgoal").innerHTML = "and your goal is " + doc.data().wgoal;
+                  getLatestSemester(doc.data());
+                  document.getElementById("text").innerHTML = "Latest Semester:";
+                  window.data = doc.data();
+                  window.semesters = doc.data().Semesters
+                } else {}
+                db.collection("users").doc("generals").get().then((doc1) => {
+                  if (doc1.exists) {
+                    document.getElementById("uwpercentile").innerHTML = "Your unweighted gpa is in the " + percentile(doc1.data()["uwgpas"], doc.data()["uwgpa"]) + " percentile.";
+                    document.getElementById("wpercentile").innerHTML = "Your weighted gpa is in the " + percentile(doc1.data()["wgpas"], doc.data()["wgpa"]) + " percentile.";
+                  } else {}
+                }).catch((err) => {});
+              }).catch((error) => {
+                console.log("Error getting data." + error);
+              });
+            }
+          }
+          wait();
+        </script>
+    </body>
+</html>
