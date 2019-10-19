@@ -1,83 +1,176 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Home</title>
-    <link type="text/css" rel="stylesheet" href="/static/main.css">
-    <link rel="icon" type="image/ico" href="/static/favicon.ico">
+  <meta charset="UTF-8">
+  <title>Home</title>
+  
+  <link type="text/css" rel="stylesheet" href="/static/main.css">
+  <link rel="icon" type="image/ico" href="/static/favicon.ico">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link type="text/css" rel="stylesheet" href="/static/main.css">
 </head>
-    <body>
-        <form>
-          <button type="button" id="signout">Sign Out</button>
-          <button type="button" id="settings">Settings</button>
-          <button type="button" id="addsems">Add Semester</button>
-        </form><br>
-        
-        
-        <a id="uwgpa"></a> <a id="uwgoal"></a><br>
-        <a id="wgpa"></a> <a id="wgoal"></a><br>
-        <a id="uwpercentile"></a><br><a id="wpercentile"></a><br><br>
-        
-        <a id="text"></a><br>
-        <div id="latest"></div>
-        
-        <script src="https://www.gstatic.com/firebasejs/6.4.2/firebase-app.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/6.4.2/firebase-auth.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/6.4.2/firebase-firestore.js"></script>
+<body>
+  <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
+    <span class="navbar-brand mb-0 h1" id="name"></span>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
+      <div class="navbar-nav">
+        <a role="button" href="#" id="signout" class="btn btn-dark mx-1">Sign Out</a>
+        <a role="button" href="#" id="settings" class="btn btn-dark mx-1">Settings</a>
+        <a role="button" href="#" id="addsems" class="btn btn-dark mx-1">Add Semester</a>
+      </div>
+    </div>
+  </nav>
+  <div class="d-flex align-items-center m-3" id="loading">
+    <strong>Loading...</strong>
+    <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
+  </div>
+  <div class="row mx-1">
+    <div class="col-sm">
+      <div class="card text-center" style="width: 100%;">
+        <h5 class="card-header">Unweighted GPA</h5>
+        <ul class="list-group list-group-fulsh">
+          <li class="list-group-item">
+            <div class="progress1" id='uw'>
+            	<span class="progress1-left">
+            		<span class="progress1-bar"></span>
+            	</span>
+            	<span class="progress1-right">
+            		<span class="progress1-bar"></span>
+            	</span>
+            	<div class="progress1-value">
+            		<div>
+            			<a id="uwgpa"></a><br>
+            			<span>Goal: <a id="uwgoal"></a></span>
+            		</div>
+            	</div>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <h5 class="card-title">Percentile</h5>
+            <h6 class="card-subtitle mb-2 text-muted"><a id="uwpercentile"></a></h6>
+            <div class="progress">
+              <div id="uwpercentilebar" class="progress-bar bg-dark" role="progressbar" style="width: 0%;"></div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-sm">
+      <div class="card text-center" style="width: 100%;">
+        <h5 class="card-header">Weighted GPA</h5>
+        <ul class="list-group list-group-fulsh">
+          <li class="list-group-item">
+            <div class="progress1" id='w'>
+            	<span class="progress1-left">
+            		<span class="progress1-bar"></span>
+            	</span>
+            	<span class="progress1-right">
+            		<span class="progress1-bar"></span>
+            	</span>
+            	<div class="progress1-value">
+            		<div>
+            			<a id="wgpa"></a><br>
+            			<span>Goal: <a id="wgoal"></a></span>
+            		</div>
+            	</div>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <h5 class="card-title">Percentile</h5>
+            <h6 class="card-subtitle mb-2 text-muted"><a id="wpercentile"></a></h6>
+            <div class="progress">
+              <div id="wpercentilebar" class="progress-bar bg-dark" role="progressbar" style="width: 0%;"></div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <br>
+  
+  <div class="row mx-1">
+    <div class="col-sm"></div>
+    <div class="col-sm-8">
+      <div class="card text-center" style="width: 100%;">
+        <h5 class="card-header"><a id="text"></a></h5>
+        <ul class="list-group list-group-fulsh" id="latest"></ul>
+      </div>
+    </div>
+    <div class="col-sm"></div>
+  </div>
+  
+  <script src="https://www.gstatic.com/firebasejs/6.4.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.4.2/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.4.2/firebase-firestore.js"></script>
 
-        <script>
-          // Your web app's Firebase configuration
-          var firebaseConfig = {
-            apiKey: "AIzaSyAiJ7LaeIdYVkYjITeD7n7l8tlhtBwbEcs",
-            authDomain: "gpa-calculat.firebaseapp.com",
-            databaseURL: "https://gpa-calculat.firebaseio.com",
-            projectId: "gpa-calculat",
-            storageBucket: "",
-            messagingSenderId: "759808162504",
-            appId: "1:759808162504:web:05dbfe6b6274801f"
-          };
-          // Initialize Firebase
-          firebase.initializeApp(firebaseConfig);
-          
-          const auth = firebase.auth();
-          const db = firebase.firestore();
-        </script>
-        <script src="/scripts/main.js"></script>
-        <script src="/scripts/firbase_communication.js"></script>
-        <script src="/scripts/redirects.js"></script>
-        <script>
-          document.getElementById("uwgpa").innerHTML = "Loading . . .";
-          document.getElementById("text").innerHTML = "Loading . . .";
-          document.getElementById("uwpercentile").innerHTML = "Loading . . .";
-          function wait() {
-            if (auth.currentUser === null) {
-              setTimeout(()=>{wait()}, 100);
-            } else {
-              auth.currentUser.emailVerified ? {} : window.location.href = "/htmls/verify.html";
+  <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyAiJ7LaeIdYVkYjITeD7n7l8tlhtBwbEcs",
+      authDomain: "gpa-calculat.firebaseapp.com",
+      databaseURL: "https://gpa-calculat.firebaseio.com",
+      projectId: "gpa-calculat",
+      storageBucket: "",
+      messagingSenderId: "759808162504",
+      appId: "1:759808162504:web:05dbfe6b6274801f"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+  </script>
+  <script src="/scripts/main.js"></script>
+  <script src="/scripts/firbase_communication.js"></script>
+  <script src="/scripts/redirects.js"></script>
+  <script>
+    function wait() {
+      if (auth.currentUser === null) {
+        setTimeout(()=>{wait()}, 100);
+      } else {
+        auth.currentUser.emailVerified ? {} : window.location.href = "/htmls/verify.html";
+        
+        db.collection("users").doc(auth.currentUser.uid).get().then((doc) => {
+          if (doc.exists) {
+            document.getElementById("name").innerHTML = "Hello, " + auth.currentUser.displayName;
+            document.getElementById("uwgpa").innerHTML = doc.data().uwgpa;
+            document.getElementById("wgpa").innerHTML = doc.data().wgpa;
+            document.getElementById("uwgoal").innerHTML = doc.data().uwgoal;
+            document.getElementById("wgoal").innerHTML = doc.data().wgoal;
+            getLatestSemester(doc.data());
+            document.getElementById("text").innerHTML = "Latest Semester:";
+            window.data = doc.data();
+            window.semesters = doc.data().Semesters
+            document.getElementById("loading").remove();
+            
+            var uwpercent = (Math.round((doc.data().uwgpa / doc.data().uwgoal) * 100)).toString();
+            document.getElementById("uw").setAttribute("data-percentage", uwpercent);
+            
+            var wpercent = (Math.round((doc.data().wgpa / doc.data().wgoal) * 100)).toString();
+            document.getElementById("w").setAttribute("data-percentage", wpercent);
+          } else {}
+          db.collection("users").doc("generals").get().then((doc1) => {
+            if (doc1.exists) {
+              document.getElementById("uwpercentile").innerHTML = percentile(doc1.data()["uwgpas"], doc.data()["uwgpa"]) + " percentile";
+              document.getElementById("wpercentile").innerHTML = percentile(doc1.data()["wgpas"], doc.data()["wgpa"]) + " percentile";
               
-              db.collection("users").doc(auth.currentUser.uid).get().then((doc) => {
-                if (doc.exists) {
-                  document.getElementById("uwgpa").innerHTML = "Your unweighted GPA is " + doc.data().uwgpa;
-                  document.getElementById("wgpa").innerHTML = "Wieghted GPA is " + doc.data().wgpa;
-                  document.getElementById("uwgoal").innerHTML = "and your goal is " + doc.data().uwgoal;
-                  document.getElementById("wgoal").innerHTML = "and your goal is " + doc.data().wgoal;
-                  getLatestSemester(doc.data());
-                  document.getElementById("text").innerHTML = "Latest Semester:";
-                  window.data = doc.data();
-                  window.semesters = doc.data().Semesters
-                } else {}
-                db.collection("users").doc("generals").get().then((doc1) => {
-                  if (doc1.exists) {
-                    document.getElementById("uwpercentile").innerHTML = "Your unweighted gpa is in the " + percentile(doc1.data()["uwgpas"], doc.data()["uwgpa"]) + " percentile.";
-                    document.getElementById("wpercentile").innerHTML = "Your weighted gpa is in the " + percentile(doc1.data()["wgpas"], doc.data()["wgpa"]) + " percentile.";
-                  } else {}
-                }).catch((err) => {});
-              }).catch((error) => {
-                console.log("Error getting data." + error);
-              });
-            }
-          }
-          wait();
-        </script>
-    </body>
+              document.getElementById("uwpercentilebar").style.width = percentile(doc1.data()["uwgpas"], doc.data()["uwgpa"]).split("th")[0] + "%";
+              document.getElementById("wpercentilebar").style.width = percentile(doc1.data()["wgpas"], doc.data()["wgpa"]).split("th")[0] + "%";
+            } else {}
+          }).catch((err) => {});
+        }).catch((error) => {
+          console.log("Error getting data." + error);
+        });
+      }
+    }
+    wait();
+  </script>
+</body>
 </html>

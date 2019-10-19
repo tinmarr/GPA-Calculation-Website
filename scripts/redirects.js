@@ -6,9 +6,7 @@ try {document.getElementById("signin").onclick = ()=>{
   window.location.href="/htmls/signin.html?redirect=/htmls/home.html";
 }} catch(err) {}
 try {document.getElementById("addsem").onclick = addSemester} catch(err) {}
-try {document.getElementById("remsem").onclick = removeSemester} catch(err) {}
 try {document.getElementById("addcla").onclick = addClass} catch(err) {}
-try {document.getElementById("remcla").onclick = removeClass} catch(err) {}
 try {document.getElementById("save").onclick = ()=>{
   calcGPAs(true);
 }} catch(err) {}
@@ -31,8 +29,8 @@ try {document.getElementById("settings").onclick = ()=>{
 try {document.getElementById("addsems").onclick = ()=>{
   window.location.href = '/htmls/addsem.html';
 }} catch(err) {}
-try {document.getElementById("changepw").onclick = ()=>{
-  window.location.href = "/html/changepw.html";
+try {document.getElementById("updatepw").onclick = ()=>{
+  changePw();
 }} catch(err) {}
 try {document.getElementById("sigoogle").onclick = ()=>{
   firebase.auth().signInWithRedirect(provider);

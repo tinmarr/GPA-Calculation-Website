@@ -1,40 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Verify Email</title>
-    <link type="text/css" rel="stylesheet" href="/static/main.css">
-    <link rel="icon" type="image/ico" href="/static/favicon.ico">
+  <meta charset="UTF-8">
+  <title>Verify Email</title>
+  
+  <link type="text/css" rel="stylesheet" href="/static/main.css">
+  <link rel="icon" type="image/ico" href="/static/favicon.ico">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link type="text/css" rel="stylesheet" href="/static/main.css">
 </head>
-    <body>
-        <div id="verifyed">
-          Please verify your email address to continue.<br>
-          <button id="verify">Resend Email Verification</button>
-        </div>
-        
-        <script src="https://www.gstatic.com/firebasejs/6.4.2/firebase-app.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/6.4.2/firebase-auth.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/6.4.2/firebase-firestore.js"></script>
-       
-        <script>
-          // Your web app's Firebase configuration
-          var firebaseConfig = {
-            apiKey: "AIzaSyAiJ7LaeIdYVkYjITeD7n7l8tlhtBwbEcs",
-            authDomain: "gpa-calculat.firebaseapp.com",
-            databaseURL: "https://gpa-calculat.firebaseio.com",
-            projectId: "gpa-calculat",
-            storageBucket: "",
-            messagingSenderId: "759808162504",
-            appId: "1:759808162504:web:05dbfe6b6274801f"
-          };
-          // Initialize Firebase
-          firebase.initializeApp(firebaseConfig);
-          
-          const auth = firebase.auth();
-          const db = firebase.firestore();
-        </script>
-        <script src="/scripts/main.js"></script>
-        <script src="/scripts/firbase_communication.js"></script>
-        <script src="/scripts/redirects.js"></script>
-    </body>
+<body class="m-2">
+  <div id="verifyed">
+    <h1>Please verify your email address to continue.</h1>
+    <button id="verify" class="btn btn-dark">Resend Email Verification</button>
+  </div>
+  
+  <script src="https://www.gstatic.com/firebasejs/6.4.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.4.2/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.4.2/firebase-firestore.js"></script>
+ 
+  <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyAiJ7LaeIdYVkYjITeD7n7l8tlhtBwbEcs",
+      authDomain: "gpa-calculat.firebaseapp.com",
+      databaseURL: "https://gpa-calculat.firebaseio.com",
+      projectId: "gpa-calculat",
+      storageBucket: "",
+      messagingSenderId: "759808162504",
+      appId: "1:759808162504:web:05dbfe6b6274801f"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+  </script>
+  <script src="/scripts/main.js"></script>
+  <script src="/scripts/firbase_communication.js"></script>
+  <script src="/scripts/redirects.js"></script>
+</body>
 </html>

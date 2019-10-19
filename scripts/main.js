@@ -7,65 +7,133 @@ var lettergrades = ["a", "b", "c", "d", "f"],
     actionCodeSettings = {url: window.location.origin + "/htmls/home.html"},
     acs1 = {url: window.location.origin + "/htmls/signin.html"};
 
+//add a text field
+function newInput(hint, id, type, element, options = null){
+  var div = document.createElement("div"),
+      input = document.createElement(element);
+      
+  div.classList.add("form-group");
+  
+  input.id = id;
+  input.type = type;
+  input.classList.add("form-control");
+  input.setAttribute("placeholder", hint);
+  
+  if (options === null) {
+    div.appendChild(input);
+    return div;
+  } else {
+    for (i=0; i<(options.length - 1); i++){
+      var option = document.createElement("option");
+      option.innerHTML = options[i];
+      input.appendChild(option);
+    }
+    input.value = options[options.length - 1];
+    div.appendChild(input);
+    return div;
+  }
+}
+
 //class management
 function addSemester(){
   semester += 1;
-  var container = document.getElementById("questions");
-  var newsem = document.createElement("div");
-  newsem.innerHTML = "Semester " +(semester) +": ";
-  newsem.id = "sem" + semester;
+  var container = document.getElementById("questions"),
+      newsem = document.createElement("div"),
+      remove = document.createElement("button"),
+      row = document.createElement("div"),
+      col1 = document.createElement("div"),
+      col2 = document.createElement("div"),
+      semid = "sem"+semester;
+      
+  col1.innerHTML = "Semester " + semester + ": ";
+  newsem.id = semid;
+  newsem.classList.add("h3");
+  newsem.classList.add("container");
+  
+  col1.classList.add("col-sm");
+  col2.classList.add("col-sm");
+  row.classList.add("row");
+  
+  remove.type = "button";
+  remove.id = "remsem" + semester;
+  remove.setAttribute("class", "btn btn-dark m-1");
+  remove.innerHTML = "Remove";
+  remove.addEventListener("click", ()=>{
+    removeSemester(semid);
+  });
+  
+  col1.appendChild(remove);
+  col2.appendChild(remove);
+  row.appendChild(col1);
+  row.appendChild(col2);
+  newsem.appendChild(row);
   container.appendChild(newsem);
+  
+  addClass();
 }
 
-function removeSemester(){
+function removeSemester(id){
   var container = document.getElementById("questions");
-  var toRem = document.getElementById("sem"+semester);
+  var toRem = document.getElementById(id);
   try {
     toRem.remove();
-  } catch (err) {window.alert("You can't remove zero semesters!")}
+  } catch (err) {window.alert("You can't remove zero semesters!"); console.log(err)}
   semester -= 1;
 }
 
 function addClass(){
   var container = document.getElementById("sem"+semester), element;
-  try{element = container.childElementCount} catch (err) {return window.alert("Try adding a semester first!")}
-  var id = "s"+semester+"c"+element;
-  var it = (element < 9) ? ("0"+(element+1)) : (element+1);
+  try{element = container.childElementCount - 1} catch (err) {return window.alert("Try adding a semester first!")}
+  var classid = "s"+semester+"c"+element,
+      it = (element < 9) ? ("0"+(element+1)) : (element+1),
+      newclass = document.createElement("div"),
+      button = document.createElement("button"),
+      row = document.createElement("div"),
+      col1 = document.createElement("div"),
+      col2 = document.createElement("div"),
+      col3 = document.createElement("div"),
+      col4 = document.createElement("div");
+      
+  newclass.id = "classcont"+classid;
+  newclass.classList.add("container");
+  col1.classList.add("col-sm");
+  col2.classList.add("col-sm");
+  col3.classList.add("col-sm");
+  col4.classList.add("col-sm");
+  row.classList.add("row");
   
-  var newclass = document.createElement("div");
-  newclass.id = "classcont"+id;
+  button.type = "button";
+  button.id = "remcla" + classid;
+  button.setAttribute("class", "btn btn-outline-dark m-1");
+  button.innerHTML = "Remove";
+  button.addEventListener("click", ()=>{
+    removeClass(classid);
+  });
   
-  var classes = document.createElement("input");
-  classes.type = "text";
-  classes.id = "class"+id;
-  classes.placeholder = "Class " + it + " Name";
-  newclass.appendChild(classes);
+  col1.appendChild(newInput("Class Name", "class"+classid, "text", "input"));
+  col2.appendChild(newInput("Grade", "grade"+classid, "text", "input"));
+  col3.appendChild(newInput("", "type"+classid, "text", "select", ["AP", "Honors", "Normal", "Normal"]));
+  col4.appendChild(button);
   
-  var grade = document.createElement("input");
-  grade.type = "text";
-  grade.id = "grade"+id;
-  grade.placeholder = "Grade";
-  newclass.appendChild(grade);
   
-  var type = document.createElement("select");
-  type.type = "text";
-  type.id = "type"+id;
-  type.options.add(new Option("AP"));
-  type.options.add(new Option("Honors"));
-  type.options.add(new Option("Normal"));
-  type.value = "Normal";
-  newclass.appendChild(type);
+  row.appendChild(col1);
+  row.appendChild(col2);
+  row.appendChild(col3);
+  row.appendChild(col4);
   
+  newclass.appendChild(row);
   container.appendChild(newclass);
 }
 
-function removeClass(){
+function removeClass(id){
   var container = document.getElementById("sem" + semester);
-  var id = "s"+semester+"c"+(container.childElementCount - 1);
   var toRem = document.getElementById("classcont"+id);
   try {
     toRem.remove();
-  } catch (err) {window.alert("You can't remove zero classes!")}
+    if (container.childElementCount === 0){
+      removeSemester();
+    }
+  } catch (err) {window.alert("You can't remove zero classes!"); console.log(err)}
 }
 
 //calculate unweighted gpa
@@ -74,7 +142,7 @@ function calcuwGPA(){
   var grades = [];
   for (i=1; i<(semester + 1); i++){
     var classes = document.getElementById("sem"+i).childElementCount;
-    for (j=0; j<classes; j++){
+    for (j=0; j<(classes - 1); j++){
       var number = "s"+i+"c"+j;
       var grade;
       var value = document.getElementById("grade"+number).value;
@@ -99,7 +167,7 @@ function calcwGPA(){
   var grades = [];
   for (i=1; i<(semester + 1); i++){
     var classes = document.getElementById("sem"+i).childElementCount;
-    for (j=0; j<classes; j++){
+    for (j=0; j<(classes - 1); j++){
       var number = "s"+i+"c"+j;
       var grade;
       var value = document.getElementById("grade"+number).value;
@@ -126,7 +194,7 @@ function getClassesAndGrades(semester){
   for (i=1; i<(semester + 1); i++){
     var numofclasses = document.getElementById("sem"+i).childElementCount;
     var inSem = {};
-    for (j=0; j<numofclasses; j++){
+    for (j=0; j<(numofclasses-1); j++){
       var number = "s"+i+"c"+j;
       var name = document.getElementById("class" + number).value;
       var grade = document.getElementById("grade" + number).value;
@@ -155,10 +223,13 @@ function getLatestSemester(data){
 
   var container = document.getElementById("latest");
   for (i=0; i<Object.keys(latestSemester).length; i++) {
-    var newclass = document.createElement("div");
-    var classKey = Object.keys(latestSemester)[i];
-    newclass.appendChild(document.createTextNode(classKey + " (" + latestSemester[classKey][1] + "): " + latestSemester[classKey][0]));
+    var newclass = document.createElement("li"),
+        classKey = Object.keys(latestSemester)[i];
+        
+    newclass.classList.add("list-group-item");
     
+    newclass.appendChild(document.createTextNode(classKey + " (" + latestSemester[classKey][1] + "): "+ latestSemester[classKey][0]));
+
     container.appendChild(newclass);
   }
 }
@@ -168,57 +239,31 @@ function getSemesters(data){
   var semesters = data.Semesters,
       length = Object.keys(semesters).length,
       container = document.getElementById("questions");
-  
+
   for (i=0; i<length; i++){
     var currentSem = semesters["Semester"+(i+1)],
         currentLength = Object.keys(currentSem).length,
         newsem = document.createElement("div"),
         newline = document.createElement("br");
-        
-    newsem.innerHTML = "Semester " +(container.childElementCount + 1) +": ";
-    newsem.id = "sem" + (container.childElementCount + 1);
-    container.appendChild(newsem);
+    
+    addSemester();
     
     for (j=0; j<currentLength; j++){
       var cn = Object.keys(currentSem)[j],
           cg = currentSem[cn][0],
           ct = currentSem[cn][1],
-          cni = document.createElement("input"),
-          cgi = document.createElement("input"),
-          cti = document.createElement("select"),
-          br = document.createElement("br"),
-          newline = document.createElement("br"),
-          div = document.createElement("div"),
-          number = "s" + (i+1) + "c" + j,
-          element = newsem.childElementCount,
-          it = (element < 9) ? ("0"+(element+1)) : (element+1);
-      
-      cni.id = "class" + number;
-      cgi.id = "grade" + number;
-      cti.id = "type" + number;
-      div.id = "classcont" + number;
-      
-      cni.type = "text";
-      cgi.type = "text";
-      cti.type = "text";
-      
-      cni.value = cn;
-      cgi.value = cg;
-      
-      cti.options.add(new Option("AP"));
-      cti.options.add(new Option("Honors"));
-      cti.options.add(new Option("Normal"));
-      
-      cti.value = ct;
-      
-      cni.placeholder = "Class " + it + " Name";
-      cgi.placeholder = "Grade";
-      
-      div.appendChild(cni);
-      div.appendChild(cgi);
-      div.appendChild(cti);
-      
-      newsem.appendChild(div);
+          number = "s" + (i-2) + "c" + j;
+          
+      if (document.getElementById("classcont" + number)){
+        document.getElementById("class"+number).value = cn;
+        document.getElementById("grade"+number).value = cg;
+        document.getElementById("type"+number).value = ct;
+      } else {
+        addClass();
+        document.getElementById("class"+number).value = cn;
+        document.getElementById("grade"+number).value = cg;
+        document.getElementById("type"+number).value = ct;
+      }
     }
     
   }

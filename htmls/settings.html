@@ -1,78 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Settings</title>
-    <link type="text/css" rel="stylesheet" href="/static/main.css">
-    <link rel="icon" type="image/ico" href="/static/favicon.ico">
+  <meta charset="UTF-8">
+  <title>Settings</title>
+  
+  <link type="text/css" rel="stylesheet" href="/static/main.css">
+  <link rel="icon" type="image/ico" href="/static/favicon.ico">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link type="text/css" rel="stylesheet" href="/static/main.css">
 </head>
-    <body>
-        <form><button type="button" id="signout">Sign Out</button></form><br>
-        <a id="load"></a>
-        <form>
-          Username: <input type="text" id="user"><br>
-          Email: <input type="email" id="email"><br>
-          Classes:<br><div id="questions"></div><br>
-          <button type="button" id="addsem">Add Semester</button>
-          <button type="button" id="remsem">Remove Semester</button><br>
-          <button type="button" id="addcla">Add Class</button>
-          <button type="button" id="remcla">Remove Class</button><br>
-          Unweighted Goal: <input type="text" id="uwgoal"><br>
-          Weighted Goal: <input type="text" id="wgoal"><br>
-          <button type="button" id="updateUser">Save All Above Fields</button><br>
-          <button type="button" id="changepw">Change Password</button><br>
-          <button type="button" id="delete">Delete Account</button><br>
-          <button type="button" id="home">Go Back</button>
-        </form>
-        <script src="https://www.gstatic.com/firebasejs/6.4.2/firebase-app.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/6.4.2/firebase-auth.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/6.4.2/firebase-firestore.js"></script>
-        
-        <script>
-          // Your web app's Firebase configuration
-          var firebaseConfig = {
-            apiKey: "AIzaSyAiJ7LaeIdYVkYjITeD7n7l8tlhtBwbEcs",
-            authDomain: "gpa-calculat.firebaseapp.com",
-            databaseURL: "https://gpa-calculat.firebaseio.com",
-            projectId: "gpa-calculat",
-            storageBucket: "",
-            messagingSenderId: "759808162504",
-            appId: "1:759808162504:web:05dbfe6b6274801f"
-          };
-          // Initialize Firebase
-          firebase.initializeApp(firebaseConfig);
-          
-          const auth = firebase.auth();
-          const db = firebase.firestore();
-          
-        </script>
-        <script src="/scripts/main.js"></script>
-        <script src="/scripts/firbase_communication.js"></script>
-        <script src="/scripts/redirects.js"></script>
-        <script>
-          var done = false;
-          document.getElementById("load").innerHTML = "Loading . . .";
-          function wait() {
-            if (auth.currentUser === null){
-              setTimeout(()=>{wait()}, 100);
-            } else {
-              db.collection("users").doc(auth.currentUser.uid).get().then((doc) => {
-                if (doc.exists) {
-                  document.getElementById("load").innerHTML = "";
-                  document.getElementById("user").value = auth.currentUser.displayName;
-                  document.getElementById("email").value = auth.currentUser.email;
-                  document.getElementById("uwgoal").value = doc.data().uwgoal;
-                  document.getElementById("wgoal").value = doc.data().wgoal;
-                  getSemesters(doc.data());
-                  window.semesters = doc.data().Semesters;
-                  window.semester = Object.keys(window.semesters).length;
-                } else {}
-              }).catch((error) => {
-                console.log("Error getting data. \n" + error);
-              });
-            }
-          }
-          wait();
-        </script>
-    </body>
+<body style="position: relative;">
+  <div class="d-flex align-items-center m-3" id="loading">
+    <strong>Loading...</strong>
+    <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
+  </div>
+  
+  <form class="m-1">
+    <div class="form-group">
+      <label for="user">Username</label>
+      <input type="text" id="user" class="form-control" placeholder="Enter username">
+    </div>
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" id="email" class="form-control" placeholder="Enter email">
+    </div>
+    <div class="form-group">
+      <label for="questions">Classes</label>
+      <div id="questions"></div>
+    </div>
+    <button type="button" id="addsem" class="btn btn-dark">Add Semester</button>
+    <button type="button" id="addcla" class="btn btn-outline-dark">Add Class</button>
+    <div class="form-group">
+      <label for="uwgoal">Unweighted Goal</label>
+      <input type="text" id="uwgoal" class="form-control" placeholder="Enter goal">
+    </div>
+    <div class="form-group">
+      <label for="wgoal">Weighted Goal</label>
+      <input type="text" id="wgoal" class="form-control" placeholder="Enter goal">
+    </div>
+    <button type="button" id="updateUser" class="btn btn-dark">Save All Above Fields</button><br>
+    <button type="button" id="changepw" class="btn btn-outline-dark">Change Password</button><br>
+    <button type="button" id="delete" class="btn btn-dark">Delete Account</button><br>
+    <button type="button" id="home" class="btn btn-outline-dark">Go Back</button>
+  </form>
+  <script src="https://www.gstatic.com/firebasejs/6.4.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.4.2/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.4.2/firebase-firestore.js"></script>
+  
+  <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyAiJ7LaeIdYVkYjITeD7n7l8tlhtBwbEcs",
+      authDomain: "gpa-calculat.firebaseapp.com",
+      databaseURL: "https://gpa-calculat.firebaseio.com",
+      projectId: "gpa-calculat",
+      storageBucket: "",
+      messagingSenderId: "759808162504",
+      appId: "1:759808162504:web:05dbfe6b6274801f"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+    
+  </script>
+  <script src="/scripts/main.js"></script>
+  <script src="/scripts/firbase_communication.js"></script>
+  <script src="/scripts/redirects.js"></script>
+  <script>
+    var semester = 0;
+    var done = false;
+    function wait() {
+      if (auth.currentUser === null){
+        setTimeout(()=>{wait()}, 100);
+      } else {
+        db.collection("users").doc(auth.currentUser.uid).get().then((doc) => {
+          if (doc.exists) {
+            document.getElementById("user").value = auth.currentUser.displayName;
+            document.getElementById("email").value = auth.currentUser.email;
+            document.getElementById("uwgoal").value = doc.data().uwgoal;
+            document.getElementById("wgoal").value = doc.data().wgoal;
+            getSemesters(doc.data());
+            window.semesters = doc.data().Semesters;
+            window.semester = Object.keys(window.semesters).length;
+            document.getElementById("loading").remove();
+          } else {}
+        }).catch((error) => {
+          console.log("Error getting data. \n" + error);
+        });
+      }
+    }
+    wait();
+  </script>
+</body>
 </html>

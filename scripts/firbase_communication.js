@@ -16,6 +16,7 @@ function calcGPAs(goalErr){
     uwgpa = calcuwGPA();
     classesAndStuff = getClassesAndGrades(semester);
   } catch (err) {
+    console.log(err);
     window.alert("There is a problem with your inputs");
   }
   try{
