@@ -204,7 +204,12 @@ function getClassesAndGrades(semester){
     var semName = "Semester" + i;
     semesters[semName] = inSem;
   }
-  return semesters;
+  if (Object.keys(semesters).length === 0) {
+    window.alert("You must have some inputs!")
+    document.getElementById("loading").remove();
+  } else {
+    return semesters;
+  }
 }
 
 //get goal info
@@ -239,33 +244,36 @@ function getSemesters(data){
   var semesters = data.Semesters,
       length = Object.keys(semesters).length,
       container = document.getElementById("questions");
-
+  console.log(length)
   for (i=0; i<length; i++){
+    console.log("ran", i)
     var currentSem = semesters["Semester"+(i+1)],
         currentLength = Object.keys(currentSem).length,
         newsem = document.createElement("div"),
         newline = document.createElement("br");
-    
+    var num = i;
     addSemester();
-    
+    i = num;
     for (j=0; j<currentLength; j++){
       var cn = Object.keys(currentSem)[j],
           cg = currentSem[cn][0],
           ct = currentSem[cn][1],
-          number = "s" + (i-2) + "c" + j;
-          
+          number = "s" + (i+1) + "c" + j;
+          console.log(number, i, j)
       if (document.getElementById("classcont" + number)){
         document.getElementById("class"+number).value = cn;
         document.getElementById("grade"+number).value = cg;
         document.getElementById("type"+number).value = ct;
       } else {
+        var numj = j;
         addClass();
+        j = numj;
+        i = num;
         document.getElementById("class"+number).value = cn;
         document.getElementById("grade"+number).value = cg;
         document.getElementById("type"+number).value = ct;
       }
     }
-    
   }
 }
 
@@ -389,4 +397,25 @@ function showPW(id) {
   } else {
     x.type = "password";
   }
+}
+
+//loading bar
+function loadingBar(){
+  var div = document.createElement("div"),
+      strong = document.createElement("strong"),
+      spinner = document.createElement("div");
+  
+  div.setAttribute("class", "d-flex align-items-center m-3");
+  div.setAttribute("id", "loading");
+  
+  strong.innerHTML = "Loading..."
+  
+  spinner.setAttribute("class", "spinner-border ml-auto");
+  spinner.setAttribute("role", "status");
+  spinner.setAttribute("aria-hidden", "true");
+  
+  div.appendChild(strong);
+  div.appendChild(spinner);
+  
+  return div;
 }

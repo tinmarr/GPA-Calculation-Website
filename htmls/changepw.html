@@ -12,37 +12,44 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 </head>
-<body>
-  <form class="m-2">
-    <div class="form-group">
-      <label for="old">Old Password</label>
-      <div class="input-group mb-3">
-        <input id="old" type="password" class="form-control" placeholder="Enter Old Password">
-        <div class="input-group-append">
-          <button class="btn btn-outline-dark" type="button" onclick="showPW('old')" data-toggle="button" aria-pressed="false" autocomplete="off">Show Password</button>
+<body id="body">
+  <h1 class="text-center m-3">Change Password</h1>
+  <div class="row mx-1 my-2">
+    <div class="col-sm"></div>
+    <div class="col-sm-5">
+      <form class="m-2">
+        <div class="form-group">
+          <label for="old">Old Password</label>
+          <div class="input-group mb-3">
+            <input id="old" type="password" class="form-control" placeholder="Enter Old Password">
+            <div class="input-group-append">
+              <button class="btn btn-outline-dark" type="button" onclick="showPW('old')" data-toggle="button" aria-pressed="false" autocomplete="off">Show Password</button>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="new">New Password</label>
-      <div class="input-group mb-3">
-        <input id="new" type="password" class="form-control" placeholder="Enter New Password">
-        <div class="input-group-append">
-          <button class="btn btn-outline-dark" type="button" onclick="showPW('new')" data-toggle="button" aria-pressed="false" autocomplete="off">Show Password</button>
+        <div class="form-group">
+          <label for="new">New Password</label>
+          <div class="input-group mb-3">
+            <input id="new" type="password" class="form-control" placeholder="Enter New Password">
+            <div class="input-group-append">
+              <button class="btn btn-outline-dark" type="button" onclick="showPW('new')" data-toggle="button" aria-pressed="false" autocomplete="off">Show Password</button>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="conf">Confirm New Password</label>
-      <div class="input-group mb-3">
-        <input id="conf" type="password" class="form-control" placeholder="Confirm New Password">
-        <div class="input-group-append">
-          <button class="btn btn-outline-dark" type="button" onclick="showPW('conf')" data-toggle="button" aria-pressed="false" autocomplete="off">Show Password</button>
+        <div class="form-group">
+          <label for="conf">Confirm New Password</label>
+          <div class="input-group mb-3">
+            <input id="conf" type="password" class="form-control" placeholder="Confirm New Password">
+            <div class="input-group-append">
+              <button class="btn btn-outline-dark" type="button" onclick="showPW('conf')" data-toggle="button" aria-pressed="false" autocomplete="off">Show Password</button>
+            </div>
+          </div>
         </div>
-      </div>
+        <button type="button" class="btn btn-dark" id="updatepw">Submit</button>
+      </form>
     </div>
-    <button type="button" class="btn btn-dark" id="updatepw">Submit</button>
-  </form>
+    <div class="col-sm"></div>
+  </div>
   
   <script src="https://www.gstatic.com/firebasejs/6.4.2/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/6.4.2/firebase-auth.js"></script>

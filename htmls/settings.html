@@ -13,40 +13,56 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link type="text/css" rel="stylesheet" href="/static/main.css">
 </head>
-<body style="position: relative;">
+<body id="body" style="position: relative;">
   <div class="d-flex align-items-center m-3" id="loading">
     <strong>Loading...</strong>
     <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
   </div>
   
-  <form class="m-1">
-    <div class="form-group">
-      <label for="user">Username</label>
-      <input type="text" id="user" class="form-control" placeholder="Enter username">
+  <div class="row mx-1 my-2">
+    <div class="col-sm"></div>
+    <div class="col-sm-8">
+      <h1 class="text-center">Settings</h1>
+      <form class="m-1">
+        <div class="container border p-2">
+          <div class="form-group">
+            <label for="user" class="h2">Username</label>
+            <input type="text" id="user" class="form-control" placeholder="Enter username">
+          </div>
+          <div class="form-group">
+            <label for="email" class="h2">Email</label>
+            <input type="email" id="email" class="form-control" placeholder="Enter email">
+          </div>
+        </div>
+        <div class="container border p-2">
+          <div class="form-group">
+            <label for="questions" class="h2">Classes</label>
+            <div id="questions"></div>
+          </div>
+          <button type="button" id="addsem" class="btn btn-dark">Add Semester</button>
+          <button type="button" id="addcla" class="btn btn-outline-dark">Add Class</button>
+        </div>
+        <div class="container border p-2">
+          <div class="form-group my-1">
+            <label for="uwgoal" class="h2">Unweighted Goal</label>
+            <input type="text" id="uwgoal" class="form-control" placeholder="Enter goal">
+          </div>
+          <div class="form-group">
+            <label for="wgoal"  class="h2">Weighted Goal</label>
+            <input type="text" id="wgoal" class="form-control" placeholder="Enter goal">
+          </div>
+        </div>
+        <div class="container text-center">
+          <button type="button" id="updateUser" class="btn btn-dark">Save All Above Fields</button><br>
+          <button type="button" id="changepw" class="btn btn-outline-dark">Change Password</button><br>
+          <button type="button" id="delete" class="btn btn-dark">Delete Account</button><br>
+          <button type="button" id="home" class="btn btn-outline-dark">Go Back</button>
+        </div>
+      </form>
     </div>
-    <div class="form-group">
-      <label for="email">Email</label>
-      <input type="email" id="email" class="form-control" placeholder="Enter email">
-    </div>
-    <div class="form-group">
-      <label for="questions">Classes</label>
-      <div id="questions"></div>
-    </div>
-    <button type="button" id="addsem" class="btn btn-dark">Add Semester</button>
-    <button type="button" id="addcla" class="btn btn-outline-dark">Add Class</button>
-    <div class="form-group">
-      <label for="uwgoal">Unweighted Goal</label>
-      <input type="text" id="uwgoal" class="form-control" placeholder="Enter goal">
-    </div>
-    <div class="form-group">
-      <label for="wgoal">Weighted Goal</label>
-      <input type="text" id="wgoal" class="form-control" placeholder="Enter goal">
-    </div>
-    <button type="button" id="updateUser" class="btn btn-dark">Save All Above Fields</button><br>
-    <button type="button" id="changepw" class="btn btn-outline-dark">Change Password</button><br>
-    <button type="button" id="delete" class="btn btn-dark">Delete Account</button><br>
-    <button type="button" id="home" class="btn btn-outline-dark">Go Back</button>
-  </form>
+    <div class="col-sm"></div>
+  </div>
+      
   <script src="https://www.gstatic.com/firebasejs/6.4.2/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/6.4.2/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/6.4.2/firebase-firestore.js"></script>
@@ -92,6 +108,7 @@
           } else {}
         }).catch((error) => {
           console.log("Error getting data. \n" + error);
+          console.error(error)
         });
       }
     }

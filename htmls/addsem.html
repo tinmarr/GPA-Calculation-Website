@@ -12,14 +12,20 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 </head>
-<body>
-  <h1>Add A Semester</h1>
-  <form id="classes">
-      <div id="questions"></div>
-      <button type="button" id="addsem" style="width: 150px;" class="btn btn-dark m-1">Add Semester</button>
-      <button type="button" id="addcla" style="width: 150px;" class="btn btn-outline-dark m-1">Add Class</button>
-  </form>
-  <button type="button" id="resave" style="width: 150px;" class="btn btn-dark m-1">Save All</button>
+<body id="body">
+  <div class="row mx-1 my-3">
+    <div class="col-sm"></div>
+    <div class="col-sm-9">
+      <h1 class="text-center">Add A Semester</h1>
+      <form id="classes">
+          <div id="questions"></div>
+          <button type="button" id="addsem" style="width: 150px;" class="btn btn-dark m-1">Add Semester</button>
+          <button type="button" id="addcla" style="width: 150px;" class="btn btn-outline-dark m-1">Add Class</button>
+      </form>
+      <button type="button" id="resave" style="width: 150px;" class="btn btn-dark m-1">Save All</button>
+    </div>
+    <div class="col-sm"></div>
+  </div>
   
   <script src="https://www.gstatic.com/firebasejs/6.4.2/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/6.4.2/firebase-auth.js"></script>

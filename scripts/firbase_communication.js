@@ -18,6 +18,7 @@ function calcGPAs(goalErr){
   } catch (err) {
     console.log(err);
     window.alert("There is a problem with your inputs");
+    document.getElementById("loading").remove();
   }
   try{
     goals = getGoals();
@@ -102,7 +103,7 @@ function updateUser(){
       email = document.getElementById("email").value,
       uwgoal = document.getElementById("uwgoal").value,
       wgoal = document.getElementById("wgoal").value,
-      classes = getClassesAndGrades(document.getElementById("class").childElementCount);
+      classes = getClassesAndGrades(document.getElementById("questions").childElementCount);
   db.collection("users").doc(auth.currentUser.uid).update({
     uwgoal: uwgoal,
     wgoal: wgoal,
@@ -149,8 +150,10 @@ function changePw(){
       });
     } else{
       window.alert("Your new password does not match. Please try again.");
+      document.getElementById("loading").remove();
     }
   }).catch((err)=>{
     window.alert("Your current password is incorrect. Please try again.");
+    document.getElementById("loading").remove();
   });
 }

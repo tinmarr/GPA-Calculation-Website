@@ -13,15 +13,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link type="text/css" rel="stylesheet" href="/static/main.css">
 </head>
-<body>
-  <form id="resetpwq" class="m-4">
-    <div class="form-group">
-      <label for="email">Email Address</label>
-      <input id="email" type="email" class="form-control" placeholder="Enter Email">
-      <small class="form-text text-muted">We'll send you an email with your reset information.</small>
+<body id="body">
+  <div class="row mx-1 my-2">
+    <div class="col-sm"></div>
+    <div class="col-sm-8">
+      <h1 class="text-center">Reset Password</h1>
+      <form id="resetpwq" class="m-1">
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input id="email" type="email" class="form-control" placeholder="Enter Email">
+          <small class="form-text text-muted">We'll send you an email with your reset information.</small>
+        </div>
+        <button type="button" class="btn btn-dark" id="reset">Reset Password</button>
+      </form>
     </div>
-    <button type="button" class="btn btn-dark" id="reset">Reset Password</button>
-  </form>
+    <div class="col-sm"></div>
+  </div>
   
   <script src="https://www.gstatic.com/firebasejs/6.4.2/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/6.4.2/firebase-auth.js"></script>
